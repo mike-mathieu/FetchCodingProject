@@ -18,7 +18,7 @@ class MainViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(MainUiState(emptyList()))
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
-    private val httpClient: HttpClient = HttpClient() {
+    private val httpClient: HttpClient = HttpClient {
         install(ContentNegotiation) {
             json()
         }
@@ -27,6 +27,13 @@ class MainViewModel : ViewModel() {
     fun updateItems() {
         viewModelScope.launch {
             val items = getItems()
+                .filter { !it.name.isNullOrBlank() }
+                .sortedWith(
+                    compareBy(
+                        { it.listId },
+                        { it.name?.length }, // could sort in a different manner if desired
+                        { it.name })
+                )
             _uiState.update {
                 it.copy(items = items)
             }
