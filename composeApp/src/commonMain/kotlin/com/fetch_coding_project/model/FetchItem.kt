@@ -1,4 +1,4 @@
-package com.fetch_coding_project
+package com.fetch_coding_project.model
 
 import kotlinx.serialization.Serializable
 
