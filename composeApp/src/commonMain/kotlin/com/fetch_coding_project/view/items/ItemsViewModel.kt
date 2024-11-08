@@ -18,7 +18,7 @@ class ItemsViewModel(private val dataRepository: DataRepository) : ViewModel() {
         MutableStateFlow(ItemsUiState(items = emptyList(), isLoading = false, isError = false))
     val uiState: StateFlow<ItemsUiState> = _uiState.asStateFlow()
 
-    // Adding unit tests here would be pretty straightforward
+    // Added a simple unit test for this in ItemsViewModelTest
     fun updateItems() {
         _uiState.update {
             it.copy(isLoading = true)
