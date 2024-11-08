@@ -52,30 +52,44 @@ fun ItemsPage() {
 
             Column {
                 // TODO add error state
-                if (uiState.isLoading) {
-                    CircularProgressIndicator(
-                        Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.Center)
-                    )
-                } else {
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
-                    ) {
-                        itemsIndexed(uiState.items) { index, item ->
-                            if (index == 0) {
-                                ListIdHeader(item.listId)
+                when {
+                    uiState.isLoading -> {
+                        CircularProgressIndicator(
+                            Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(Alignment.Center)
+                        )
+                    }
+
+                    uiState.isError -> {
+                        // Basic error message, would obviously be expanded upon in production
+                        Text(
+                            text = "An error has occurred. Please try again.",
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(Alignment.Center)
+                        )
+                    }
+
+                    else -> {
+                        LazyColumn(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentPadding = PaddingValues(top = 8.dp, bottom = 8.dp),
+                        ) {
+                            itemsIndexed(uiState.items) { index, item ->
+                                if (index == 0) {
+                                    ListIdHeader(item.listId)
+                                }
+                                if (index != 0 && item.listId != uiState.items[index - 1].listId) {
+                                    Divider(
+                                        modifier = Modifier.padding(vertical = 8.dp),
+                                        color = Color.Black,
+                                        thickness = 8.dp
+                                    )
+                                    ListIdHeader(item.listId)
+                                }
+                                ItemCell(item)
                             }
-                            if (index != 0 && item.listId != uiState.items[index - 1].listId) {
-                                Divider(
-                                    modifier = Modifier.padding(vertical = 8.dp),
-                                    color = Color.Black,
-                                    thickness = 8.dp
-                                )
-                                ListIdHeader(item.listId)
-                            }
-                            ItemCell(item)
                         }
                     }
                 }

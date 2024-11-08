@@ -8,7 +8,7 @@ import io.ktor.client.request.get
 import io.ktor.serialization.kotlinx.json.json
 
 interface DataRepository {
-    suspend fun getItems(): List<FetchItem>
+    suspend fun getItems(): ApiResponse<List<FetchItem>>
 }
 
 class DataRepositoryImpl: DataRepository {
@@ -18,8 +18,13 @@ class DataRepositoryImpl: DataRepository {
         }
     }
 
-    override suspend fun getItems(): List<FetchItem> =
-        httpClient
-            .get("https://fetch-hiring.s3.amazonaws.com/hiring.json")
-            .body<List<FetchItem>>()
+    override suspend fun getItems(): ApiResponse<List<FetchItem>> =
+        try {
+            val response = httpClient
+                .get("https://fetch-hiring.s3.amazonaws.com/hiring.json")
+                .body<List<FetchItem>>()
+            ApiResponse.Success(response)
+        } catch (e: Exception) {
+            ApiResponse.Error(e)
+        }
 }

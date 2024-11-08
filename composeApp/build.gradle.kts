@@ -56,6 +56,11 @@ kotlin {
             implementation(libs.koin.compose.viewmodel.navigation)
             implementation(libs.koin.core)
         }
+
+        commonTest.dependencies {
+            implementation(libs.kotlin.test)
+            implementation(libs.jetbrains.kotlinx.coroutines.test)
+        }
     }
 }
 

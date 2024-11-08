@@ -8,6 +8,9 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
+/**
+ * Sets up Dependency Injection for the app
+ * */
 val appModule = module {
     singleOf(::DataRepositoryImpl) { bind<DataRepository>() }
     viewModelOf(::ItemsViewModel)
